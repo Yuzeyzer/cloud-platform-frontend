@@ -11,9 +11,19 @@ const Registration = () => {
     password: '',
   });
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    registration(registerBody);
+    setRegisterBody({
+      name: '',
+      email: '',
+      password: '',
+    });
+  };
+
   return (
     <RegisterBody>
-      <RegisterForm>
+      <RegisterForm onSubmit={handleSubmit}>
         <RegisterTitle>Регистрация</RegisterTitle>
         <Input
           setValue={setRegisterBody}
@@ -34,7 +44,9 @@ const Registration = () => {
           type='password'
           name='password'
         />
-        <AuthButton registerBody={registerBody} registration={registration} text='Зарегистрироваться' />
+        <AuthButton
+          text='Зарегистрироваться'
+        />
       </RegisterForm>
     </RegisterBody>
   );

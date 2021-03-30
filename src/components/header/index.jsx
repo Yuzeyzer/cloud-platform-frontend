@@ -1,14 +1,18 @@
 import React from 'react';
-import {
-  HeaderWrapper, 
-  HeaderButton,
-  HeaderContainer,
-  LogoText,
-  Logo
-} from './style';
-import {Link} from 'react-router-dom'
+import { HeaderWrapper, HeaderButton, HeaderContainer, LogoText, Logo } from './style';
+import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { userLogout } from '../../actions/userAction';
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const isAuth = useSelector((state) => state.user.isAuth);
+
+  const logout = () => {
+    if (window.confirm('Вы уверены что хотите выйти?')) {
+      dispatch(userLogout());
+    }
+  };
   return (
     <HeaderWrapper>
       <HeaderContainer>
@@ -24,9 +28,22 @@ const Header = () => {
           <LogoText>MERN CLOUD</LogoText>
         </Logo>
         <div>
-        <HeaderButton><Link to="/login">Войти</Link></HeaderButton>
-        <HeaderButton><Link to="/register">Регистрация</Link></HeaderButton>
-      </div>
+          {!isAuth && (
+            <>
+              <HeaderButton>
+                <Link to='/login'>Войти</Link>
+              </HeaderButton>
+              <HeaderButton>
+                <Link to='/register'>Регистрация</Link>
+              </HeaderButton>
+            </>
+          )}
+          {isAuth && (
+            <HeaderButton onClick={logout}>
+              <Link to='/'>Выход</Link>
+            </HeaderButton>
+          )}
+        </div>
       </HeaderContainer>
     </HeaderWrapper>
   );

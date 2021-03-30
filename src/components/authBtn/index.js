@@ -1,15 +1,10 @@
 import React from 'react';
 import { AuthBtn } from './styles';
 
-const AuthButton = ({ text, registration, registerBody }) => {
-  const sendData = (event) => {
-    event.preventDefault();
-    const { name, email, password } = registerBody;
-    registration(name, email, password);
-  };
+const AuthButton = ({ text}) => {
 
   return (
-    <AuthBtn type='submit' onClick={(event) => sendData(event)}>
+    <AuthBtn type='submit'>
       {text}
     </AuthBtn>
   );
