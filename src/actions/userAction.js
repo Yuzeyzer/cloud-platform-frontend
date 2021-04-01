@@ -28,9 +28,23 @@ export const login = (loginBody) => {
       });
       dispatch(userLogin(response.data.user));
       localStorage.setItem('token', response.data.token);
-      console.log(response.data);
     } catch (error) {
       alert(error, 'здесь');
     }
   };
 };
+
+export const auth = () => {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get('http://localhost:8080/api/auth/auth', 
+      { headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}});
+      dispatch(userLogin(response.data.user));
+      console.log(response.data);
+    } catch (error) {
+      localStorage.removeItem('token')
+      alert(error, 'здесь');
+    }
+  };
+};
+
