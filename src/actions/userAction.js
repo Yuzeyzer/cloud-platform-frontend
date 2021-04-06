@@ -40,7 +40,7 @@ export const auth = () => {
       const response = await axios.get('http://localhost:8080/api/auth/auth', 
       { headers: {Authorization: `Bearer ${localStorage.getItem('token')}`}});
       dispatch(userLogin(response.data.user));
-      console.log(response.data);
+      // console.log(response.data);
     } catch (error) {
       localStorage.removeItem('token')
       alert(error, 'здесь');
