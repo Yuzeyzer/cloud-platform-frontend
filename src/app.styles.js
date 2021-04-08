@@ -1,6 +1,10 @@
 import {createGlobalStyle } from 'styled-components'
 
 export const AppGlobalStyles = createGlobalStyle`
+	.container {
+		max-width: 1140px;
+		margin: 0 auto;
+	}
 	input,button { 
 		outline: none;
 		border: none;

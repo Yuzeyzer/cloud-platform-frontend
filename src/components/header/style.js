@@ -7,8 +7,6 @@ export const HeaderWrapper = styled.header`
 export const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  max-width: 1040px;
-  margin: 0 auto;
 `
 
 export const HeaderButton = styled.button`

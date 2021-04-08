@@ -16,7 +16,7 @@ function App() {
     dispatch(auth());
   }, []);
   return (
-    <div>
+    <div className='container'>
       <AppGlobalStyles />
       <Header />
       {!isAuth ? (
