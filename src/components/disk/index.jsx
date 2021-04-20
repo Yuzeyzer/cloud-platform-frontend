@@ -36,27 +36,28 @@ const Disk = () => {
     files.forEach((file) => dispatch(uploadFile(file)));
   };
 
-  const dragEnterHandler = (event) => {
+  const stopTarget = (event) => {
     event.preventDefault();
     event.stopPropagation();
+  }
+
+  const dragEnterHandler = (event) => {
+    stopTarget(event)
     setDragEnter(true);
   };
 
   const dragOverHandler = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
+    stopTarget(event)
     setDragEnter(true);
   };
 
   const dragLeaveHandler = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
+    stopTarget(event)
     setDragEnter(false);
   };
 
   const dropHandler = (event) => {
-    event.preventDefault();
-    event.stopPropagation();
+    stopTarget(event)
     const files = [...event.dataTransfer.files];
     files.forEach((file) => dispatch(uploadFile(file)));
     setDragEnter(false);

@@ -49,14 +49,17 @@ export const uploadFile = (file, dirId) => {
       const response = await axios.post(`http://localhost:8080/api/files/upload`, formData, {
         headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         onUploadProgress: (progressEvent) => {
-          const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length'); 
-        
-          console.log('Это переменная totalLength', totalLength)
+          const totalLength = progressEvent.lengthComputable
+            ? progressEvent.total
+            : progressEvent.target.getResponseHeader('content-length') ||
+              progressEvent.target.getResponseHeader('x-decompressed-content-length');
+
+          console.log('Это переменная totalLength', totalLength);
 
           if (totalLength) {
             let progress = Math.round((progressEvent.loaded * 100) / totalLength);
 
-            console.log('Это переменная progress', progress)
+            console.log('Это переменная progress', progress);
           }
         },
       });
@@ -67,4 +70,27 @@ export const uploadFile = (file, dirId) => {
       console.log(err);
     }
   };
+};
+
+export const downloadFile = async (file) => {
+  try {
+    const response = fetch(`http://localhost:8080/api/files/download?id=${file._id}`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+    });
+
+    // console.log(response.json())
+
+    if (response.status === 200) {
+      const blob = await response.blob();
+      const downloadUrl = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = file.name;
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    }
+  } catch (err) {
+    console.log(err);
+  }
 };
