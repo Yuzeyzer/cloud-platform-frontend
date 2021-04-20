@@ -72,25 +72,22 @@ export const uploadFile = (file, dirId) => {
   };
 };
 
-export const downloadFile = async (file) => {
-  try {
-    const response = fetch(`http://localhost:8080/api/files/download?id=${file._id}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-    });
+export async function downloadFile(file) {
+  const response = await fetch(`http://localhost:8080/api/files/download?id=${file._id}`,{
+      headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+      }
+  })
 
-    // console.log(response.json())
-
-    if (response.status === 200) {
-      const blob = await response.blob();
-      const downloadUrl = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = downloadUrl;
-      link.download = file.name;
-      document.body.appendChild(link);
-      link.click();
-      link.remove();
-    }
-  } catch (err) {
-    console.log(err);
+  console.log(response, 'Это response')
+  if (response.status === 200) {
+      const blob = await response.blob()
+      const downloadUrl = window.URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = downloadUrl
+      link.download = file.name
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
   }
-};
+}
