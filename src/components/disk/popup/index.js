@@ -3,9 +3,10 @@ import { useDispatch } from 'react-redux';
 import { createDir } from '../../../actions/file';
 import { PopupWrapper, PopupContent, PopupHeader, PopupCreateBtn, PopupInput } from './style';
 
-const Popup = ({ currentDir, activePopup, setActivePopup, popupRef }) => {
+const Popup = ({ currentDir, activePopup, setActivePopup }) => {
   const dispatch = useDispatch();
   const [dirName, setDirName] = React.useState('');
+  const popupRef = React.useRef();
 
   const createHandler = () => {
     dispatch(createDir(currentDir, dirName));
@@ -19,6 +20,15 @@ const Popup = ({ currentDir, activePopup, setActivePopup, popupRef }) => {
     }
   };
 
+  const handleOutsideClick = (e) => {
+    if (popupRef.current && !popupRef.current.contains(e.target)) {
+      setActivePopup(false);
+    }
+  };
+
+  React.useEffect(() => {
+    document.body.addEventListener('click', handleOutsideClick);
+  }, []);
 
   return (
     activePopup && (

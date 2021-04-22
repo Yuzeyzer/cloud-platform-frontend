@@ -65,23 +65,6 @@ const Disk = () => {
     setDragEnter(false);
   };
 
-  const btnRef = React.useRef();
-  let togler = 0;
-  const closeOnClick = (event) => {
-    if (event.path.includes(btnRef.current)) {
-      if (!event.path.includes(popupRef.current) && togler !== 0) setActivePopup(false);
-      togler = 1;
-    }
-    if (!event.path.includes(popupRef.current) && togler !== 0) {
-      setActivePopup(false);
-      togler = 0;
-    }
-  };
-
-  React.useEffect(() => {
-    document.body.addEventListener('click', closeOnClick);
-  }, []);
-
   return !dragEnter ? (
     <DiskWrapper
       onDragEnter={dragEnterHandler}
@@ -91,9 +74,7 @@ const Disk = () => {
         <button onClick={backDirHandler} className='disk__back'>
           Назад
         </button>
-        <BtnCreate ref={btnRef} onClick={() => setActivePopup(true)}>
-          Создать папку
-        </BtnCreate>
+        <BtnCreate onClick={() => setActivePopup(true)}>Создать папку</BtnCreate>
         <div className='disk__upload'>
           <DiskUploadLabel htmlFor='upload-input'>Загрузить файл</DiskUploadLabel>
           <DiskUploadInput
@@ -105,12 +86,14 @@ const Disk = () => {
         </div>
       </BtnsWrapper>
       <FileList />
-      <Popup
-        popupRef={popupRef}
-        setActivePopup={setActivePopup}
-        activePopup={activePopup}
-        currentDir={currentDir}
-      />
+      {activePopup && (
+        <Popup
+          popupRef={popupRef}
+          setActivePopup={setActivePopup}
+          activePopup={activePopup}
+          currentDir={currentDir}
+        />
+      )}
     </DiskWrapper>
   ) : (
     <DragEnter
