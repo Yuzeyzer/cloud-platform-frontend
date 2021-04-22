@@ -4,7 +4,7 @@ import directoryIcon from '../../../../assets/directory.svg';
 import fileIcon from '../../../../assets/file.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentDir, pushToStack } from '../../../../reducers/fileReducer';
-import { downloadFile } from '../../../../actions/file';
+import { deleteFile, downloadFile } from '../../../../actions/file';
 
 const File = ({ file }) => {
   const dispatch = useDispatch();
@@ -20,7 +20,13 @@ const File = ({ file }) => {
   const donwloadClickHandler = (event) => {
     event.stopPropagation();
     downloadFile(file);
-  }
+  };
+
+  const deleteClickHandler = (e) => {
+    console.log(file);
+    e.stopPropagation();
+    dispatch(deleteFile(file));
+  };
 
   return (
     <FileWrapper onClick={openDirHandler}>
@@ -28,8 +34,10 @@ const File = ({ file }) => {
       <h3>{file.name}</h3>
       <FileDate className='file-date'>{file.date.slice(0, 10)}</FileDate>
       <FileSize className='file-size'>{file.size}</FileSize>
-      {file.type !== 'directory' && <DonwloadButton onClick={(event) => donwloadClickHandler(event)}>Download</DonwloadButton>}
-      <DeleteButton>Delete</DeleteButton>
+      {file.type !== 'directory' && (
+        <DonwloadButton onClick={(event) => donwloadClickHandler(event)}>Download</DonwloadButton>
+      )}
+      <DeleteButton onClick={(event) => deleteClickHandler(event)}>Delete</DeleteButton>
     </FileWrapper>
   );
 };

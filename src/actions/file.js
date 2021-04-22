@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { setFiles, addFile } from '../reducers/fileReducer';
+import { setFiles, addFile, deleteFileAction } from '../reducers/fileReducer';
 
 export const getFiles = (dirId) => {
   return async (dispatch) => {
@@ -73,21 +73,38 @@ export const uploadFile = (file, dirId) => {
 };
 
 export async function downloadFile(file) {
-  const response = await fetch(`http://localhost:8080/api/files/download?id=${file._id}`,{
-      headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-      }
-  })
+  const response = await fetch(`http://localhost:8080/api/files/download?id=${file._id}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  });
 
-  console.log(response, 'Это response')
+  console.log(response, 'Это response');
   if (response.status === 200) {
-      const blob = await response.blob()
-      const downloadUrl = window.URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = downloadUrl
-      link.download = file.name
-      document.body.appendChild(link)
-      link.click()
-      link.remove()
+    const blob = await response.blob();
+    const downloadUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = file.name;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
   }
+}
+
+export function deleteFile(file) {
+  return async (dispatch) => {
+    try {
+      const response = await axios.delete(`http://localhost:8080/api/files?id=${file._id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      console.log(response)
+      dispatch(deleteFileAction(file._id));
+      console.log(response.data.message)
+    } catch (err) {
+      console.log(err);
+    }
+  };
 }
