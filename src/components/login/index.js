@@ -34,7 +34,7 @@ const Login = () => {
           value={loginBody.password}
           setValue={setLoginBody}
           text='Введите пароль...'
-          type='password'
+          type='text'
         />
         <AuthButton text='Войти' />
       </LoginForm>

@@ -12,6 +12,7 @@ import {
 import { setCurrentDir } from '../../reducers/fileReducer';
 import FileList from './fileList/fileList';
 import Popup from './popup';
+import Uploader from './uploader';
 
 const Disk = () => {
   const dispatch = useDispatch();
@@ -61,7 +62,7 @@ const Disk = () => {
   const dropHandler = (event) => {
     stopTarget(event);
     const files = [...event.dataTransfer.files];
-    files.forEach((file) => dispatch(uploadFile(file)));
+    files.forEach((file) => dispatch(uploadFile(file, currentDir)));
     setDragEnter(false);
   };
 
@@ -94,6 +95,7 @@ const Disk = () => {
           currentDir={currentDir}
         />
       )}
+      <Uploader />
     </DiskWrapper>
   ) : (
     <DragEnter
