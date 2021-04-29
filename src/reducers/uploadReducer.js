@@ -5,7 +5,7 @@ const REMOVE_UPLOAD_FILE = 'REMOVE_UPLOAD_FILE';
 const CHANGE_UPLOAD_FILE = 'CHANGE_UPLOAD_FILE';
 
 const initialState = {
-  isVisible: true,
+  isVisible: false,
   files: [],
 };
 
@@ -16,15 +16,28 @@ export default function uploadReducer(state = initialState, action) {
     case HIDE_UPLOADER:
       return { ...state, isVisible: false };
     case ADD_UPLOAD_FILE:
-      return { ...state, files: [...state.files, { ...action.payload, id: state.length }] };
+      return { ...state, files: [...state.files, action.payload] };
     case REMOVE_UPLOAD_FILE:
       return { ...state, files: [...state.files.filter((file) => file.id !== action.payload)] };
+    case CHANGE_UPLOAD_FILE: {
+      return {
+        ...state,
+        files: [
+          ...state.files.map((file) =>
+            file.id !== action.payload.id
+              ? { ...state, progress: action.payload.progress }
+              : { ...file },
+          ),
+        ],
+      };
+    }
     default:
       return state;
   }
 }
 
-export const SHOW_UPLOADER_ACTION = () => ({ type: SHOW_UPLOADER });
-export const HIDE_UPLOADER_ACTION = () => ({ type: HIDE_UPLOADER });
-export const ADD_UPLOAD_FILE_ACTION = () => ({ type: ADD_UPLOAD_FILE });
-export const REMOVE_UPLOAD_FILE_ACTION = () => ({ type: REMOVE_UPLOAD_FILE });
+export const showUploadFile = () => ({ type: SHOW_UPLOADER });
+export const hideUploadFile = () => ({ type: HIDE_UPLOADER });
+export const addUploadFile = (file) => ({ type: ADD_UPLOAD_FILE, payload: file });
+export const removeUploadFile = (fileId) => ({ type: REMOVE_UPLOAD_FILE, payload: fileId });
+export const changeUploadFile = (payload) => ({ type: CHANGE_UPLOAD_FILE, payload: payload });

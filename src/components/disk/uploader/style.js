@@ -9,6 +9,7 @@ export const UploaderWrapper = styled.div`
   background-color: #566885;
   padding: 20px;
   border-radius: 12px;
+  overflow-y: auto;
 `;
 
 export const UploaderHeader = styled.div`

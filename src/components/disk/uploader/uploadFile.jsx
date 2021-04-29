@@ -1,4 +1,6 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { removeUploadFile } from '../../../reducers/uploadReducer';
 import {
   UploadFileWrapper,
   UploadFileHeader,
@@ -8,11 +10,14 @@ import {
 } from './style';
 
 const UploadFile = ({ file }) => {
+
+  const dispatch = useDispatch();
+  
   return (
     <UploadFileWrapper>
       <UploadFileHeader className='header'>
         <div>{file.name}</div>
-        <button>X</button>
+        <button onClick={() => dispatch(removeUploadFile(file.id))}>X</button>
       </UploadFileHeader>
       <UploadFileProgressBar>
         <UploadFileUploadBar width={file.progress} />
