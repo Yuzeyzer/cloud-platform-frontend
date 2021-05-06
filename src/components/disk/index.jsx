@@ -18,6 +18,7 @@ const Disk = () => {
   const dispatch = useDispatch();
   const [activePopup, setActivePopup] = React.useState(false);
   const [dragEnter, setDragEnter] = React.useState(false);
+  const [sort, setSort] = React.useState('name');
 
   const popupRef = React.useRef();
 
@@ -25,8 +26,9 @@ const Disk = () => {
   const dirStack = useSelector((state) => state.files.dirStack);
 
   React.useEffect(() => {
-    dispatch(getFiles(currentDir));
-  }, [currentDir]);
+    console.log(sort)
+    dispatch(getFiles(currentDir, sort));
+  }, [currentDir, sort]);
 
   const backDirHandler = () => {
     const backDirId = dirStack.pop();
@@ -84,6 +86,15 @@ const Disk = () => {
             id='upload-input'
             type='file'
           />
+          <select
+            value={sort}
+            onChange={(event) => setSort(event.target.value)}
+            className='disk__select'>
+            <option value='name'>По имени</option>
+            <option value='type'>По типу</option>
+            <option value='date'>По дате</option>
+            <option value='size'>По размеру</option>
+          </select>
         </div>
       </BtnsWrapper>
       <FileList />

@@ -8,6 +8,8 @@ import {
 } from './styles';
 import File from './file/file';
 import { useSelector } from 'react-redux';
+import { TransitionGroup, CSSTransition } from 'react-transition-group';
+import './animate.css';
 
 const FileList = () => {
   const files = useSelector((state) => {
@@ -21,9 +23,13 @@ const FileList = () => {
         <FileListDate>Дата</FileListDate>
         <FileListSize>Размер</FileListSize>
       </FileListHeader>
-      {files.map((file) => {
-        return <File file={file} key={file._id} />;
-      })}
+      <TransitionGroup>
+        {files.map((file) => (
+          <CSSTransition key={file._id} timeout={500} classNames='file' exit={false}>
+            <File file={file} />
+          </CSSTransition>
+        ))}
+      </TransitionGroup>
     </FileListWrapper>
   );
 };

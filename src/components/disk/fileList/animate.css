@@ -1,0 +1,26 @@
+.file-enter-active {
+  -webkit-animation: file-enter 500ms forwards;
+          animation: file-enter 500ms forwards;
+}
+
+@-webkit-keyframes file-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes file-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -5,6 +5,7 @@ import fileIcon from '../../../../assets/file.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentDir, pushToStack } from '../../../../reducers/fileReducer';
 import { deleteFile, downloadFile } from '../../../../actions/file';
+import fileSizes from '../../fileSizes';
 
 const File = ({ file }) => {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const File = ({ file }) => {
       <FileImg src={file.type === 'directory' ? directoryIcon : fileIcon} alt='' />
       <h3>{file.name}</h3>
       <FileDate className='file-date'>{file.date.slice(0, 10)}</FileDate>
-      <FileSize className='file-size'>{file.size}</FileSize>
+      <FileSize className='file-size'>{fileSizes(file.size)}</FileSize>
       {file.type !== 'directory' && (
         <DonwloadButton onClick={(event) => donwloadClickHandler(event)}>Download</DonwloadButton>
       )}

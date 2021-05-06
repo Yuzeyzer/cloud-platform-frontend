@@ -1,14 +1,27 @@
 import axios from 'axios';
 import { setFiles, addFile, deleteFileAction } from '../reducers/fileReducer';
-import { addUploadFile, showUploadFile,changeUploadFile } from '../reducers/uploadReducer';
+import { addUploadFile, showUploadFile, changeUploadFile } from '../reducers/uploadReducer';
 
-export const getFiles = (dirId) => {
+export const getFiles = (dirId, sort) => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/files${dirId ? '?parent=' + dirId : ''}`,
-        { headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } },
-      );
+      let url = `http://localhost:8080/api/files`;
+
+      if (dirId) {
+        url = `http://localhost:8080/api/files?parent=${dirId}`;
+      }
+
+      if (sort) {
+        url = `http://localhost:8080/api/files?sort=${sort}`;
+      }
+
+      if (dirId && sort) {
+        url = `http://localhost:8080/api/files?parent=${dirId}&sort=${sort}`;
+      }
+
+      const response = await axios.get(url, {
+        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+      });
       dispatch(setFiles(response.data));
       console.log(response.data);
     } catch (err) {
@@ -61,7 +74,8 @@ export const uploadFile = (file, dirId) => {
 
           if (totalLength) {
             uploadFile.progress = Math.round((progressEvent.loaded * 100) / totalLength);
-            dispatch(changeUploadFile(uploadFile))
+            // Пофиксить баг
+            dispatch(changeUploadFile(uploadFile));
           }
         },
       });
