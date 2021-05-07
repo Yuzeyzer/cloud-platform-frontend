@@ -13,6 +13,7 @@ import { setCurrentDir } from '../../reducers/fileReducer';
 import FileList from './fileList/fileList';
 import Popup from './popup';
 import Uploader from './uploader';
+import './loader.css';
 
 const Disk = () => {
   const dispatch = useDispatch();
@@ -22,11 +23,14 @@ const Disk = () => {
 
   const popupRef = React.useRef();
 
+  const { loader } = useSelector((state) => state.loader);
   const currentDir = useSelector((state) => state.files.currentDir);
   const dirStack = useSelector((state) => state.files.dirStack);
 
+  console.log(loader);
+
   React.useEffect(() => {
-    console.log(sort)
+    console.log(sort);
     dispatch(getFiles(currentDir, sort));
   }, [currentDir, sort]);
 
@@ -37,7 +41,6 @@ const Disk = () => {
 
   const fileUploadHandler = (event) => {
     const files = [...event.target.files];
-
     files.forEach((file) => dispatch(uploadFile(file, currentDir)));
   };
 
@@ -67,6 +70,19 @@ const Disk = () => {
     files.forEach((file) => dispatch(uploadFile(file, currentDir)));
     setDragEnter(false);
   };
+
+  if (loader) {
+    return (
+      <div className='loader-container'>
+        <div class='lds-ring'>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    );
+  }
 
   return !dragEnter ? (
     <DiskWrapper
