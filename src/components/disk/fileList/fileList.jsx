@@ -16,6 +16,13 @@ const FileList = () => {
     return state.files.files;
   });
 
+  if (files.length === 0) {
+    return (
+    <div>
+      <h3>Файлы не найдены</h3>
+    </div>)
+  }
+
   return (
     <FileListWrapper>
       <FileListHeader>

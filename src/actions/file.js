@@ -89,6 +89,9 @@ export const uploadFile = (file, dirId) => {
     } catch (err) {
       console.log(err);
     }
+    finally {
+      dispatch(hideLoader());
+    }
   };
 };
 
@@ -123,6 +126,23 @@ export function deleteFile(file) {
       console.log(response);
       dispatch(deleteFileAction(file._id));
       console.log(response.data.message);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+}
+
+
+export function searchFiles(searchName) {
+  return async (dispatch) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/files/search?search=${searchName}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      console.log(response);
+      dispatch(setFiles(response.data))
     } catch (err) {
       console.log(err);
     }
